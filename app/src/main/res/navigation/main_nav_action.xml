@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_action"
+    app:startDestination="@id/mainPageFragment">
+
+    <fragment
+        android:id="@+id/mainPageFragment"
+        android:name="com.example.recipes.ui.fragment.MainPageFragment"
+        android:label="fragment_main_page"
+        tools:layout="@layout/fragment_main_page" >
+        <action
+            android:id="@+id/recipeEntryFragment"
+            app:destination="@id/recipeEntryFragment" />
+        <action
+            android:id="@+id/recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipeEntryFragment"
+        android:name="com.example.recipes.ui.fragment.RecipeEntryFragment"
+        android:label="fragment_recipe_entry"
+        tools:layout="@layout/fragment_recipe_entry" />
+    <fragment
+        android:id="@+id/recipeDetailFragment"
+        android:name="com.example.recipes.ui.fragment.RecipeDetailFragment"
+        android:label="fragment_recipe_detail"
+        tools:layout="@layout/fragment_recipe_detail">
+        <argument
+            android:name="recipe"
+            app:argType="com.example.recipes.data.entity.Recipes" />
+    </fragment>
+</navigation>
