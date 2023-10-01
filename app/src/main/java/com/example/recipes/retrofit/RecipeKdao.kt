@@ -1,10 +1,13 @@
 package com.example.recipes.retrofit
 
-import com.example.recipes.data.entity.CRUD
-import com.example.recipes.data.entity.RecipeAnswer
-import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
+import com.example.recipes.data.entity.BaseRecipes
+import com.example.recipes.data.entity.DetailResponse
+import com.example.recipes.data.entity.RecipeRequest
+import com.example.recipes.data.entity.Recipes
+import com.example.recipes.data.entity.RecipesAnswer
+import com.example.recipes.data.entity.RecipesX
+import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -13,24 +16,18 @@ interface RecipeKdao {
     //https://api.canerture.com/recipes/get_recipes.php
 
     @GET("get_recipes.php")
-    fun allRecipes():Call<RecipeAnswer>
+    suspend fun recipes(): Response<RecipesAnswer>
 
-    @POST("search_recipe.php")
-    @FormUrlEncoded
-    fun recipeSearch(@Field("recipe_name") recipe_name: String):Call<RecipeAnswer>
+    @GET("search_recipe.php")
+    suspend fun foodSearch(@Query("query") query: String): Response<RecipesX>
 
     @GET("get_recipe_detail.php")
-    fun recipeDetail(@Query("recipe_id") recipe_id: Int): Call <RecipeAnswer>
+    suspend fun recipeDetail(@Query("id") id: Int): Response<DetailResponse>
 
     @POST("add_recipe.php")
-    @FormUrlEncoded
-    fun recipeAdd(@Field("recipe_name") recipe_name: String,
-                  @Field("recipe_detail") recipe_detail: String) : Call<CRUD>
+    suspend fun addRecipe(@Body request: RecipeRequest): Response<BaseRecipes>
 
     @POST("update_recipe.php")
-    @FormUrlEncoded
-    fun recipeUpdate(@Field("recipe_id")recipe_id: Int,
-                     @Field("recipe_name")recipe_name: String,
-                     @Field("recipe_detail")recipe_detail: String) : Call<CRUD>
+    suspend fun recipeUpdate(@Body request: Recipes): Response<BaseRecipes>
 
 }

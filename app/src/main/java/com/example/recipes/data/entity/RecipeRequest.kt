@@ -3,13 +3,10 @@ package com.example.recipes.data.entity
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class Recipes(
+data class RecipeRequest(
 
-    @SerializedName("id")
-    val id: Int,
     @SerializedName("name")
-    var name: String,
+    val name: String,
     @SerializedName("description")
-    var description: String
-
+    val description: String,
 ) : Serializable

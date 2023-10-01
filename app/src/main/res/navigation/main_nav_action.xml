@@ -21,7 +21,11 @@
         android:id="@+id/recipeEntryFragment"
         android:name="com.example.recipes.ui.fragment.RecipeEntryFragment"
         android:label="fragment_recipe_entry"
-        tools:layout="@layout/fragment_recipe_entry" />
+        tools:layout="@layout/fragment_recipe_entry" >
+        <action
+            android:id="@+id/action_recipeEntryFragment_to_mainPageFragment"
+            app:destination="@id/mainPageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/recipeDetailFragment"
         android:name="com.example.recipes.ui.fragment.RecipeDetailFragment"

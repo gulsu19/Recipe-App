@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.recipes.R
+import com.example.recipes.data.entity.Recipes
 import com.example.recipes.databinding.FragmentRecipeDetailBinding
 import com.example.recipes.ui.viewmodel.RecipeDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,24 +18,37 @@ import dagger.hilt.android.AndroidEntryPoint
 class RecipeDetailFragment : Fragment() {
     private lateinit var binding: FragmentRecipeDetailBinding
     private val viewModel: RecipeDetailViewModel by viewModels()
+    private var receivedId: Int? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_detail, container, false)
-        binding.recipeDetailFragment = this
-        binding.recipeDetailToolbarTitle = "Recipes Detail"
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentRecipeDetailBinding.inflate(inflater, container, false)
 
-        val bundle: RecipeDetailFragmentArgs by navArgs()
-        val comingRecipe = bundle.recipe
-        binding.recipeObject = comingRecipe
+        receivedId = arguments?.getInt("recipeId")
+        if (receivedId != null) {
+            viewModel.recipeDetail(receivedId ?: 0)
+        }
 
-        comingRecipe?.let {
-            binding.recipeObject = it
+        viewModel.recipeDetail.observe(viewLifecycleOwner) {
+            binding.editTextRecipeName.setText(it.recipe.name)
+            binding.editTextRecipeDetail.setText(it.recipe.description)
         }
 
         return binding.root
     }
 
-    fun buttonUpdate(recipe_id: Int , recipe_name: String, recipe_detail: String){
-        viewModel.recipeUpdate(recipe_id,recipe_name,recipe_detail)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.buttonUpdate.setOnClickListener {
+            val recipeName = binding.editTextRecipeName.text.toString()
+            val recipeDetail = binding.editTextRecipeDetail.text.toString()
+
+            if (receivedId != null) {
+                viewModel.updateRecipe(Recipes(receivedId ?: 0, recipeName, recipeDetail))
+            }
+        }
     }
 }
